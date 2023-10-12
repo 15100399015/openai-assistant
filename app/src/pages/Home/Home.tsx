@@ -1,36 +1,18 @@
-
-import { Editor, EditorState } from "draft-js";
-import React from "react";
-import "./draft.css";
+import { nanoid } from "@/lib/utils";
+import { Chat } from "@/chatComponents/chat";
+import { TailwindIndicator } from "@/chatComponents/tailwind-indicator";
+import { Providers } from "@/chatComponents/providers";
 export const runtime = "edge";
-export default function IndexPage() {
-  const [editorState, setEditorState] = React.useState(() => {
-    return EditorState.createEmpty();
-  });
 
-  const editor = React.useRef<Editor>(null);
-  function focusEditor() {
-    if (editor.current) {
-      editor.current.focus();
-    }
-  }
-  const onChange = (value: any) => {
-    console.log(value);
-    // console.log(editor.current.);
-    
-    setEditorState(value);
-  };
+export default function IndexPage() {
+  const id = nanoid();
+
   return (
-    <div
-      style={{ border: "1px solid black", minHeight: "6em", cursor: "text" }}
-      onClick={focusEditor}
-    >
-      <Editor
-        ref={editor}
-        editorState={editorState}
-        onChange={onChange}
-        placeholder="Write something!"
-      />
-    </div>
+    <Providers attribute="class" defaultTheme="system" enableSystem>
+      <div className="flex flex-col h-screen overflow-hidden">
+        <Chat id={id} />
+      </div>
+      <TailwindIndicator />
+    </Providers>
   );
 }
