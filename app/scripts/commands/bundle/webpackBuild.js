@@ -1,6 +1,8 @@
+const fs = require("fs");
+const path = require("path");
 const webpack = require("webpack");
 const loadEnvFile = require("../../utils/loadEnvFile");
-const { Logger } = require("../../utils/utils");
+const { Logger, preCheck } = require("../../utils/utils");
 
 function webpackBuild(options, config) {
   loadEnvFile("production", config);
@@ -81,8 +83,21 @@ function webpackBuild(options, config) {
         Logger.logError(closeErr);
       } else {
         Logger.logInfo("Compiler Close");
+        publishToServer(
+          statsData.outputPath,
+          path.join(config.contextDir, "../server/public")
+        );
       }
     });
   });
 }
+
+function publishToServer(outputPath, servePublicPath) {
+  Logger.logInfo("Start Publish to Server");
+  fs.cpSync(outputPath, servePublicPath, {
+    recursive: true,
+  });
+  Logger.logSuccess("Publish to Server Finish");
+}
+
 module.exports = webpackBuild;
