@@ -15,28 +15,26 @@
  * limitations under the License.
  */
 
-const productionVariable = [
-    { name: "NODE_ENV", default: "production" },
-]
+const productionVariable = [{ name: "NODE_ENV", default: "production" }];
 const developmentVariable = [
-    { name: "NODE_ENV", default: "development" },
-    { name: "PROXY_SERVER", default: "http://localhost:1234" },
-    { name: "SERVER_PORT", default: 3000 },
-]
+  { name: "NODE_ENV", default: "development" },
+  { name: "PROXY_SERVER", default: "http://localhost:1234" },
+  { name: "SERVER_PORT", default: 3000 },
+];
 
 module.exports = {
-    "production": productionVariable,
-    "development": developmentVariable,
-    filter(isDev = true, originEnvObj = {}) {
-        const newObj = {}
-        const dev = developmentVariable.map((v) => v.name)
-        const prod = productionVariable.map((v) => v.name)
-        Object.entries(originEnvObj).forEach(([key, value]) => {
-            if (typeof value !== "string" && typeof value !== "number") return
-            if ((isDev && dev.includes(key)) || (!isDev && prod.includes(key))) {
-                newObj[key] = value;
-            }
-        })
-        return newObj
-    }
-}
+  production: productionVariable,
+  development: developmentVariable,
+  filter(isDev = true, originEnvObj = {}) {
+    const newObj = {};
+    const dev = developmentVariable.map((v) => v.name);
+    const prod = productionVariable.map((v) => v.name);
+    Object.entries(originEnvObj).forEach(([key, value]) => {
+      if (typeof value !== "string" && typeof value !== "number") return;
+      if ((isDev && dev.includes(key)) || (!isDev && prod.includes(key))) {
+        newObj[key] = value;
+      }
+    });
+    return newObj;
+  },
+};
